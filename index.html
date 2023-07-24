@@ -152,6 +152,69 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Linux系统基础（一)——认识和安装Linux" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>@<a href="%E7%9B%AE%E5%BD%95">TOC</a></p>
+<h2 id="Linux系统认识"><a href="#Linux系统认识" class="headerlink" title="Linux系统认识"></a>Linux系统认识</h2><h3 id="Linux系统的应用领域"><a href="#Linux系统的应用领域" class="headerlink" title="Linux系统的应用领域"></a>Linux系统的应用领域</h3><p>应用服务器<br>嵌入式领域<br>软件开发<br>桌面应用</p>
+<h3 id="Linux系统的特点"><a href="#Linux系统的特点" class="headerlink" title="Linux系统的特点"></a>Linux系统的特点</h3><p>开放性<br>多用户<br>多任务<br>良好的用户界面<br>设备独立性<br>丰富的网络功能<br>可靠的系统安全<br>良好的可移植性</p>
+<h3 id="Linux系统的组成"><a href="#Linux系统的组成" class="headerlink" title="Linux系统的组成"></a>Linux系统的组成</h3><p>内核<br>Shell<br>文件系统<br>应用程序</p>
+<h3 id="Linux内核版本号的组成"><a href="#Linux内核版本号的组成" class="headerlink" title="Linux内核版本号的组成"></a>Linux内核版本号的组成</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">uname</span> -r</span><br></pre></td></tr></table></figure>
+<p>内核版本号是由点分隔的3段数字组成：r，x，y，比如3.10.0-327.<br>r：目前发布的内核主版本<br>x：偶数表示稳定版本；奇数表示开发版本<br>y：错误修补的次数</p>
+<h3 id="Linux发行版本"><a href="#Linux发行版本" class="headerlink" title="Linux发行版本"></a>Linux发行版本</h3><p>一些组织和厂家，将Linux系统的内核、应用软件和文档包装起来，并提供一些系统安装界面、系统配置设定管理工具，就构成了Linux发行版本。<br>主流的发行版本<br>Mandriva<br>Red Hat<br>SUSE<br>Debian<br>Ubuntu<br>Gentoo<br>Slackware<br>Red Flag</p>
+<h2 id="安装Linux系统"><a href="#安装Linux系统" class="headerlink" title="安装Linux系统"></a>安装Linux系统</h2><h3 id="分区命名方案"><a href="#分区命名方案" class="headerlink" title="分区命名方案"></a>分区命名方案</h3><p>Linux系统使用字母和数字的组合来指代硬盘分区，使用一种更加灵活的分区命名方案，该命名方案是基于文件的，文件名的格式为&#x2F;dev&#x2F;xxyN（比如&#x2F;dev&#x2F;sda1分区）</p>
+<ul>
+<li>&#x2F;dev：这是Linux系统中所有设备文件所在的目录名。因为分区位于硬盘上，而硬盘是设备，所以这些文件代表了在&#x2F;dev上所有可能的分区；</li>
+<li>xx：分区名的前两个字母表示分区所在设备的类型，通常是hd(IDE硬盘)或sd(SCSI硬盘)</li>
+<li>y：这个字母表示分区所在的设备。例如&#x2F;dev&#x2F;hda（第一个IDE硬盘）或&#x2F;dev&#x2F;sdb（第2个SCSI硬盘）；</li>
+<li>N：最后的数字N代表分区。前4个分区（主分区或扩展分区）用数字1~4表示，逻辑驱动器从5开始。例如&#x2F;dev&#x2F;hda3是第一个IDE硬盘上的第3个主分区或扩展分区；&#x2F;dev&#x2F;sdb6是第2个SCSI硬盘上的第2个逻辑驱动器</li>
+</ul>
+<h3 id="磁盘分区和挂载目录"><a href="#磁盘分区和挂载目录" class="headerlink" title="磁盘分区和挂载目录"></a>磁盘分区和挂载目录</h3><p> Linux系统中的每一个分区都是构成支持一组文件和目录所需的存储区的一部分。它是通过挂载来实现的，挂载是将分区关联到某一目录的过程，挂载分区使起始于这个指定目录（称为挂载目录）的存储区能够被使用。<br> 例如，如果分区&#x2F;dev&#x2F;sda5被挂载在目录&#x2F;usr上，这意味着所有在&#x2F;usr下的文件和目录在物理上位于&#x2F;dev&#x2F;sda5。因此文件&#x2F;usr&#x2F;bin&#x2F;cal被保存在分区&#x2F;dev&#x2F;sda5上，而文件&#x2F;etc&#x2F;passwd却不是。<br> &#x2F;usr目录下的目录还有可能是其它分区的挂载目录。例如，某个分区(如&#x2F;dev&#x2F;sda7)可以被挂载到&#x2F;usr&#x2F;local目录下，这意味着文件&#x2F;usr&#x2F;local&#x2F;man&#x2F;whatis将位于分区&#x2F;dev&#x2F;sda7上，而不是分区&#x2F;dev&#x2F;sda5上。</p>
+<h3 id="磁盘分区规划"><a href="#磁盘分区规划" class="headerlink" title="磁盘分区规划"></a>磁盘分区规划</h3><p> swap分区：即交换分区，实现虚拟内存，建议大小是物理内存的1~2倍；<br> &#x2F;boot分区：用来存放与Linux系统启动有关的程序，比如引导装载程序等，最少200MB；<br> &#x2F;usr分区：用来存放Linux系统中的应用程序，其相关数据较多，建议大小最少为8GB；<br> &#x2F;var分区：用来存放Linux系统中经常变化的数据以及日志文件，建议大小最少为1GB；<br> &#x2F; 分区：Linux系统的根目录，所有的目录都挂载在这个目录下面，建议大小最少为1GB；<br> &#x2F;home分区：存放普通用户的数据，是普通用户的宿主目录，建议大小为剩下的空间；</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2023/07/24/Linux%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%EF%BC%88%E4%B8%80)%E2%80%94%E2%80%94%E8%AE%A4%E8%AF%86%E5%92%8C%E5%AE%89%E8%A3%85Linux/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-我的第一篇博客" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -189,81 +252,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2023/07/22/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2023/07/22/hello-world/">Hello World</a>
-    </h1>
-  
-
-        
-        <a href="/2023/07/22/hello-world/" class="archive-article-date">
-  	<time datetime="2023-07-22T08:03:11.733Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-07-22</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2023/07/22/hello-world/">展开全文 >></a>
         </p>
       
 
